@@ -1,0 +1,7 @@
+title:
+    login: Secure connection
+label:
+    password: Password
+    username: Username
+action:
+    sign_in: Sign
