@@ -5,3 +5,5 @@ label:
     username: Username
 action:
     sign_in: Sign
+    sign_up: Sign up
+    search: Search

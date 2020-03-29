@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -10,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="users")
  *
+ * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
 class User implements UserInterface
 {
@@ -59,12 +61,12 @@ class User implements UserInterface
         $this->fullName = $fullName;
     }
 
-    public function getFullName(): string
+    public function getFullName(): ?string
     {
         return $this->fullName;
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -74,7 +76,7 @@ class User implements UserInterface
         $this->username = $username;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
