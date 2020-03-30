@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -13,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable, EquatableInterface
 {
     /**
      * @ORM\Id
@@ -50,7 +51,10 @@ class User implements UserInterface
      * @ORM\Column(type="json")
      */
     private $roles = [];
-
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $locale;    
     public function getId(): int
     {
         return $this->id;
@@ -112,6 +116,17 @@ class User implements UserInterface
     {
         $this->roles = $roles;
     }
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(string $locale): self
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
 
     public function getSalt(): ?string
     {
@@ -120,5 +135,38 @@ class User implements UserInterface
 
     public function eraseCredentials(): void
     {
+    }
+    public function serialize()
+    {
+        return serialize([
+            $this->id, 
+            $this->username,
+            $this->email,
+            $this->password,
+            $this->locale,
+            $this->roles
+        ]);
+    } 
+
+    public function unserialize($string)
+    {
+        list (
+            $this->id, 
+            $this->username,
+            $this->email,
+            $this->password,
+            $this->locale,
+            $this->roles
+        ) = unserialize($string, ['allowed_classes' => false]);
+    }
+    public function isEqualTo(UserInterface $user)
+    {
+        if ($user instanceof self)
+        {
+            if ($user->getLocale() != $this->locale) {
+                return false;
+            }
+        }
+        return true;
     }
 }

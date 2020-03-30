@@ -1,0 +1,10 @@
+Hello: Salut
+title:
+    login: connexion sécurisé
+label:
+    password: mot de passe
+    username: nom d'utlisateur
+action:
+    sign_in: Sign
+    sign_up: Sign up
+    search: Chercher

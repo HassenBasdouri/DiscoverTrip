@@ -1,0 +1,14 @@
+{% set route = app.request.attributes.get('_route') %}
+{% set route_params = app.request.attributes.get('_route_params') %}
+{% set params = route_params|merge(app.request.query.all) %}
+
+{# You may want to not print a flag/link for current view, the "if" here let 
+you handle it #}
+
+{% for locale in locales  %}
+
+    <li>
+        
+    </li>
+
+{% endfor %}
