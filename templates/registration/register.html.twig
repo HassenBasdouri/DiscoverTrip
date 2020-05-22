@@ -3,15 +3,60 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
-
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.fullName) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+{{ parent() }}
+    <div class="card bg-light">
+        <article class="card-body mx-auto" style="max-width: 400px;">
+            <h1>Create an account</h1>
+            {{ form_start(registrationForm ) }}
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                 </div>
+                 {{ form_widget(registrationForm.username ) }}
+            </div> <!-- form-group// -->
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                 </div>
+                 {{ form_widget(registrationForm.fullName) }}
+            </div> <!-- form-group// -->
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
+                 </div>
+                 {{ form_widget(registrationForm.email) }}
+            </div> <!-- form-group// -->
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-phone"></i> </span>
+                </div>
+                {{ form_widget(registrationForm.telephone) }}
+            </div> <!-- form-group// -->
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-flag"></i> </span>
+                </div>
+                {{ form_widget(registrationForm.nationality) }}
+            </div> <!-- form-group// -->
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                </div>
+                {{ form_widget(registrationForm.plainPassword.first) }}
+            </div> <!-- form-group// -->
+            <div class="form-group input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                </div>
+                {{ form_widget(registrationForm.plainPassword.second) }}
+            </div> <!-- form-group// -->                                      
+            <div class="form-group">
+            <button class="btn btn-primary">Register</button>
+            </div> <!-- form-group// -->      
+            <p class="text-center">Have an account? <a href="{{path('security_login')}}">Log In</a> </p>                                                                 
+        {{ form_end(registrationForm) }}
+        </article>
+        </div> <!-- card.// -->
+        
+        </div> 
 {% endblock %}

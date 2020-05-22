@@ -3,38 +3,45 @@
 namespace App\Form;
 
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username')
-            ->add('fullName')
-            ->add('email',EmailType::class)
-            ->add('agreeTerms', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'You should agree to our terms.',
-                    ]),
-                ],
-            ])
+            ->add('username',TextType::class,array(
+               'attr'=>['placeholder'=>"Username"]
+            ))
+            ->add('fullName',TextType::class,array(
+                'attr'=>['placeholder'=>"Full name"]
+             ))
+            ->add('telephone',TelType::class,array(
+                'attr'=>['placeholder'=>"phone number"]
+             ))
+            ->add('email',EmailType::class,array(
+                'attr'=>['placeholder'=>" Email address"]
+             ))
+            ->add('nationality',EntityType::class, array(
+                'class' => 'App\Entity\Country',
+                'choice_label' => 'name'
+                ))
             ->add('plainPassword', RepeatedType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-                'first_options'  => ['label' => 'Password'],
-                'second_options' => ['label' => 'Repeat Password'],
+                'first_options'  => ['attr'=>['placeholder' => 'Password']],
+                'second_options' => ['attr'=>['placeholder' => 'Repeat Password']],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Please enter a password',

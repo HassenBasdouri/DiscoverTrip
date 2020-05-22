@@ -1,0 +1,41 @@
+<div class="card bg-light">
+    <article class="card-body mx-auto" style="max-width: 90%;">
+{{ form_start(form) }}
+{{ form_help(form.discription) }}
+<div class="form-group input-group">
+     {{ form_widget(form.discription) }}
+</div> <!-- form-group// -->
+{{ form_help(form.price) }}
+<div class="form-group input-group">
+    {{ form_widget(form.price) }}
+</div> <!-- form-group// -->
+{{ form_help(form.beginningDate) }}
+<div class="form-group input-group">
+    {{ form_widget(form.beginningDate) }}
+</div> <!-- form-group// -->
+{{ form_help(form.endingDate) }}
+<div class="form-group input-group">
+    {{ form_widget(form.endingDate) }}
+</div> <!-- form-group// -->
+{{ form_help(form.type) }}
+<div class="form-group input-group">
+    {{ form_widget(form.type) }}
+</div> <!-- form-group// -->
+{{ form_help(form.country) }}
+<div class="form-group input-group">
+    {{ form_widget(form.country) }}
+</div> <!-- form-group// -->
+{{ form_help(form.state) }}
+<div class="form-group input-group">
+    {{ form_widget(form.state) }}
+</div> <!-- form-group// -->
+{{ form_help(form.images) }}
+<div class="form-group input-group">
+    {{ form_widget(form.images) }}
+</div> <!-- form-group// -->
+<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+</article>
+</div> <!-- card.// -->
+    
+

@@ -4,32 +4,43 @@
 
 {% block stylesheets %}
     {{ parent() }}
-
     <link rel="stylesheet" href="{{ asset('css/account.css') }}">
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <div class="row user-menu-container square">
-            <div class="col-md-12 user-details">
-                <div class="row spacepurplebg white">
-                    <div class="col-md-2 no-pad">
-                        <div class="user-pad">
-                            <h3>Welcome back, {{ app.user.fullName }}</h3>
-                            <div class="user-image">
-                                <img src="{{ app.user.username }}" class="img-responsive thumbnail">
-                            </div>
-                            <h5> Name :{{ app.user.fullName }}</h5>
-                            <h5> Name :{{ app.user.fullName }}</h5>
-                            <h5> Name :{{ app.user.fullName }}</h5>
-                            <h5> Name :{{ app.user.fullName }}</h5>
-                            <a class="btn btn-labeled btn-info" href="#">
-                                <span class="btn-label"><i class="fa fa-pencil"></i></span>Update
-                            </a>
+{{ parent() }}
+<div class="page-header header-filter" data-parallax="true" style="background-image:url('http://wallpapere.org/wp-content/uploads/2012/02/black-and-white-city-night.png');"></div>
+<div class="main main-raised">
+    <div class="profile-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 ml-auto mr-auto">
+                   <div class="profile">
+                        <div class="avatar">
+                            {% if app.user.ProfilImage is not null %}
+                            <img src="{{asset('images/')}}{{app.user.ProfilImage.path}}" alt="Circle Image" style="height: 200px;" class="img-raised rounded-circle img-fluid">
+                            {% else %}
+                            <img src="{{asset('images/')}}default_avatar.png" alt="Circle Image" class="img-raised rounded-circle img-fluid">  
+                            {% endif %}
+                            
+                        </div>
+                        <a class=" btn" href="{{ path('image_edit') }}">Edit image</a>
+                        <div class="name">
+                            <h3 class="title">{{app.user.fullname}}</h3>
+                            <h5>Garented Roles :</h5>
+                            {% for role in app.user.roles %}
+                            <h6> - {{role}}</h6>  
+                            {% endfor %}
                         </div>
                     </div>
-             </div>
-         </div>
+                </div>
+            </div>
+            <div class="description text-center">
+                <p>Email: {{app.user.email}}</p>
+                <p>From : {{app.user.nationality.name}}</p>
+                <p>Telephone: {{app.user.telephone}}</p>
+            </div>  
         </div>
     </div>
+</div>
 {% endblock %}

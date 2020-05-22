@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -11,7 +13,6 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="users")
- *
  * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
 class User implements UserInterface, \Serializable, EquatableInterface
@@ -23,6 +24,10 @@ class User implements UserInterface, \Serializable, EquatableInterface
      */
     private $id;
 
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles;
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank()
@@ -46,15 +51,55 @@ class User implements UserInterface, \Serializable, EquatableInterface
      * @ORM\Column(type="string")
      */
     private $password;
-
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $locale;    
+    private $locale;
+
+
+    /**
+     * @ORM\Column(type="string", length=14, nullable=true)
+     */
+    private $telephone;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $professionalNumber;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $experienceYears;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="planner")
+     */
+    private $myEvents;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Participation", mappedBy="participant", orphanRemoval=true)
+     */
+    private $participation;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Image", cascade={"persist","remove"})
+     */
+    private $ProfilImage;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $nationality;
+
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+        $this->participantEvents = new ArrayCollection();
+        $this->myEvents = new ArrayCollection();
+        $this->participation = new ArrayCollection();
+    }    
     public function getId(): int
     {
         return $this->id;
@@ -103,12 +148,6 @@ class User implements UserInterface, \Serializable, EquatableInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-
-        // il est obligatoire d'avoir au moins un rôle si on est authentifié, par convention c'est ROLE_USER
-        if (empty($roles)) {
-            $roles[] = 'ROLE_USER';
-        }
-
         return array_unique($roles);
     }
 
@@ -121,7 +160,7 @@ class User implements UserInterface, \Serializable, EquatableInterface
         return $this->locale;
     }
 
-    public function setLocale(string $locale): self
+    public function setLocale(?string $locale): self
     {
         $this->locale = $locale;
 
@@ -168,5 +207,127 @@ class User implements UserInterface, \Serializable, EquatableInterface
             }
         }
         return true;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getProfessionalNumber(): ?int
+    {
+        return $this->professionalNumber;
+    }
+
+    public function setProfessionalNumber(?int $professionalNumber): self
+    {
+        $this->professionalNumber = $professionalNumber;
+
+        return $this;
+    }
+
+    public function getExperienceYears(): ?int
+    {
+        return $this->experienceYears;
+    }
+
+    public function setExperienceYears(?int $experienceYears): self
+    {
+        $this->experienceYears = $experienceYears;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getMyEvents(): Collection
+    {
+        return $this->myEvents;
+    }
+
+    public function addMyEvent(Event $myEvent): self
+    {
+        if (!$this->myEvents->contains($myEvent)) {
+            $this->myEvents[] = $myEvent;
+            $myEvent->setPlanner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMyEvent(Event $myEvent): self
+    {
+        if ($this->myEvents->contains($myEvent)) {
+            $this->myEvents->removeElement($myEvent);
+            // set the owning side to null (unless already changed)
+            if ($myEvent->getPlanner() === $this) {
+                $myEvent->setPlanner(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Participation[]
+     */
+    public function getParticipation(): Collection
+    {
+        return $this->participation;
+    }
+
+    public function addParticipation(Participation $participation): self
+    {
+        if (!$this->participation->contains($participation)) {
+            $this->participation[] = $participation;
+            $participation->setParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipation(Participation $participation): self
+    {
+        if ($this->participation->contains($participation)) {
+            $this->participation->removeElement($participation);
+            // set the owning side to null (unless already changed)
+            if ($participation->getParticipant() === $this) {
+                $participation->setParticipant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProfilImage(): ?Image
+    {
+        return $this->ProfilImage;
+    }
+
+    public function setProfilImage(?Image $ProfilImage): self
+    {
+        $this->ProfilImage = $ProfilImage;
+
+        return $this;
+    }
+
+    public function getNationality(): ?Country
+    {
+        return $this->nationality;
+    }
+
+    public function setNationality(?Country $nationality): self
+    {
+        $this->nationality = $nationality;
+
+        return $this;
     }
 }

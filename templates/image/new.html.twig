@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Image{% endblock %}
+
+{% block body %}
+    <h1>New Profil Image</h1>
+
+    {{ include('image/_form.html.twig') }}
+{% endblock %}
+{% block javascripts %}
+    {{parent()}}
+    <script src=" {{ asset('js/states_new_event.js')}} " ></script>
+{% endblock %}
