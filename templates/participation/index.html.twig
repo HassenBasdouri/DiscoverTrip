@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}My Participations{% endblock %}
+
+{% block body %}
+    <h1>My Participations</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Event</th>
+                <th>Payment</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for p in participations %}
+            <tr>
+                <td>{{ p.event.discription }}</td>
+                <td>{{ p.payment}} </td>
+            <td>
+                    <a href="{{ path('event_show', {'id': p.event.id}) }}"><i class="fa fa-search-plus" aria-hidden="true"></i> show</a>
+                   <br> <a href="{{ path('cancel_participation', {'id': p.id}) }}"><i class="fa fa-edit" aria-hidden="true"></i> Cancel participation</a>
+            <td/>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">You are not participate in any event !</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

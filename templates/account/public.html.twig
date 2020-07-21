@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{planner.fullname}}{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/account.css') }}">
+{% endblock %}
+
+{% block body %}
+{{ parent() }}
+<div class="page-header header-filter" data-parallax="true" style="background-image:url('http://wallpapere.org/wp-content/uploads/2012/02/black-and-white-city-night.png');"></div>
+<div class="main main-raised">
+    <div class="profile-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 ml-auto mr-auto">
+                   <div class="profile">
+                        <div class="avatar">
+                            {% if planner.ProfilImage is not null %}
+                            <img src="{{asset('images/')}}{{planner.ProfilImage.path}}" alt="Circle Image" style="height: 200px;" class="img-raised rounded-circle img-fluid">
+                            {% else %}
+                            <img src="{{asset('images/')}}default_avatar.png" alt="Circle Image" class="img-raised rounded-circle img-fluid">  
+                            {% endif %}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="description text-center">
+                <p>My name is <b>{{planner.fullname}}</b>,</p>
+                <p>I am from {{planner.nationality.name}}.</p>
+                <p>And I have {{planner.experienceYears}} years of experince.</p>
+                <p>Contact me if you are intrested , my e-mail: {{planner.email}}</p>
+                <p>My telephone number : {{planner.telephone}}.</p>
+                <p>See you in my event(s) &#128525; !</p>
+            </div>  
+        </div>
+    </div>
+</div>
+{% endblock %}

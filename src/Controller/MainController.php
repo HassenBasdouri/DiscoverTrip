@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Repository\EventRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,9 +16,9 @@ class MainController extends AbstractController
      */
     public function home(EventRepository $eventRepository)
     {
-       if ($this->isGranted('ROLE_ADMIN')){
-        return $this->redirectToRoute('admin_home');
-       }
+      // if ($this->isGranted('ROLE_ADMIN')){
+      //  return $this->redirectToRoute('admin_home');
+       //}
        return $this->render("home.html.twig", [
         'events' => $eventRepository->findAll(),
     ]);

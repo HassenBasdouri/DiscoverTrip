@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\UserRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,6 +17,16 @@ class AccountController extends AbstractController
         $logger->debug('Checking account page for '.$this->getUser()->getEmail());
         return $this->render('account/index.html.twig', [
 
+        ]);
+    }
+    /**
+     * @Route("/account/{username}", name="public_account")
+     */
+    public function public(UserRepository $ur, String $username)
+    {
+        $usr=$ur->findOneBy(['username'=>$username]);
+        return $this->render('account/public.html.twig', [
+            'planner'=>$usr
         ]);
     }
 

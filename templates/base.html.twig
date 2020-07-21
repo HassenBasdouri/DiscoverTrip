@@ -4,10 +4,6 @@
         <meta charset="UTF-8">
         <title>{% block title %}DiscoverTrip{% endblock %}</title>
         {% block stylesheets %}
-      <link rel="stylesheet" src=" {{ asset('css/style.css')}} " >
-        <link rel="stylesheet" href="https://plugins.krajee.com/assets/73278038/css/fileinput.css?ver=201909132002">
-        <link rel="stylesheet" src="https://plugins.krajee.com/assets/73278038/css/fileinput-rtl.min.css?ver=201908311938">
-        <link rel="stylesheet" src="https://plugins.krajee.com/assets/cd81d157/css/dropdown.min.css">
         {{ encore_entry_link_tags('app') }}
         {% endblock %}
     </head>       
@@ -31,6 +27,11 @@
                 {% if  is_granted('ROLE_PLANNER') %}
                 <li class="nav-item">
                   <a class="nav-link" href="{{path('event_index')}}">My events</a>
+                </li>
+                {% endif %}
+                {% if  is_granted('ROLE_USER') %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{path('participations')}}">My participations</a>
                 </li>
                 {% endif %}
               {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}

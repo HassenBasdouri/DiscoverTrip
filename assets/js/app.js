@@ -7,6 +7,7 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import '../css/app.css';
+import '../../public/css/style.css';
 import 'bootstrap/dist/js/bootstrap';
 import 'popper.js/dist/umd/popper';
 import 'bootstrap/dist/css/bootstrap.min.css';

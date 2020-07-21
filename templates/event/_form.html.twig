@@ -32,6 +32,7 @@
 {{ form_help(form.images) }}
 <div class="form-group input-group">
     {{ form_widget(form.images) }}
+    <output id="result" />
 </div> <!-- form-group// -->
 <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

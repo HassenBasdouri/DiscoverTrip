@@ -44,7 +44,21 @@
                 </a>
               </div>
               <p>In  {{ event.state.name }} - {{ event.state.country.name }}</p>
-              <a href="#">By <b>{{ event.planner.fullname }}</b></a>
+              <a href="{{path('public_account',{'username':event.planner.username})}}">By <b>{{ event.planner.fullname }}</b></a>
+              {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %} 
+              {% endif %}
+              {% set idp = null %}
+              {% for p in event.participations %}
+                {% if p.participant == app.user %}
+                  {% set idp = p.id %}
+                {% endif %}
+              {% endfor %}
+              {% if idp %}
+               <b>You are Participate in this event</b>
+               <a href="{{path('cancel_participation', {'id': idp})}}">Cancel</a>
+              {% else %}
+               <a href="{{path('event_participation', {'id': event.id})}}">Participate</b></a>
+              {% endif %}
          </div> 
            {% endfor %}
         </div>

@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\Image;
+use App\Entity\Participation;
 use App\Form\EventType;
-use App\Repository\EventRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
- * @IsGranted("ROLE_PLANNER")
+ * @IsGranted("ROLE_USER")
  * @Route("/event")
  */
 class EventController extends AbstractController
@@ -22,7 +22,7 @@ class EventController extends AbstractController
     /**
      * @Route("/", name="event_index", methods={"GET"})
      */
-    public function index(EventRepository $eventRepository): Response
+    public function index(): Response
     {
         return $this->render('event/index.html.twig', [
             'events' => $this->getUser()->getMyEvents(),
@@ -107,5 +107,38 @@ class EventController extends AbstractController
         }
 
         return $this->redirectToRoute('event_index');
+    }
+    
+     /**
+     * @Route("/participate/{id}", name="event_participation", methods={"GET"})
+     */
+    public function participate( Event $event): Response
+    {
+        $participation = new Participation();
+        $participation->setParticipant($this->getUser());
+        $participation->setEvent($event);
+        $participation->setPayment(true);
+        $this->getDoctrine()->getManager()->persist($participation);
+        $this->getDoctrine()->getManager()->flush();
+        return $this->redirectToRoute('homepage');
+    }
+    /**
+     * @Route("/cancel/participation/{id}", name="cancel_participation", methods={"GET"})
+     */
+    public function cancel( Request $request,Participation $participation): Response
+    {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($participation);
+            $entityManager->flush();
+        return $this->redirectToRoute('homepage');
+    }
+    /**
+     * @Route("/my/participations", name="participations")
+     */
+    public function participations(): Response
+    {
+        return $this->render('participation/index.html.twig', [
+            'participations' => $this->getUser()->getParticipation(),
+        ]);
     }
 }
